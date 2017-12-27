@@ -1,1 +1,2 @@
-# POO_JeudeBombes
+Module Poo
+projet : Jeu de bombes
