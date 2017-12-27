@@ -2,10 +2,21 @@
 package Project_java_l3_IMI_2.demo.fr.umlv.zen5.demo;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import Project_java_l3_IMI.Graphe;
 import Project_java_l3_IMI.Noeud;
@@ -18,7 +29,7 @@ public class Demo {
 	 
     static class Area {
 	    private Ellipse2D.Float ellipse = new Ellipse2D.Float(0, 0, 0, 0);
-	   
+	 
 	    
 	    void draw(ApplicationContext context,ArrayList<Noeud> path, float xx, float yy) {
 	      context.renderFrame(graphics  -> {
@@ -45,7 +56,30 @@ public class Demo {
 	    }
 	  }
   static class Area2 {
-	    private Ellipse2D.Float ellipse = new Ellipse2D.Float(0, 0, 0, 0);
+	    private static String imageFileNameMur = Paths.get(System.getProperty("user.dir"),"Image","mur.png").toString();//"amazigh.png";
+	    private static URL imageSrc;
+
+	   private static BufferedImage bi;
+	   private Ellipse2D.Float ellipse = new Ellipse2D.Float(0, 0, 0, 0);
+	
+
+	   public static void SeeThroughComponent(URL imageSrc) {
+	      try {
+	          BufferedImage img = ImageIO.read(imageSrc);
+	          int w = img.getWidth(null);
+	          int h = img.getHeight(null);
+	          bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	          Graphics g = bi.getGraphics();
+	          g.drawImage(img, 0, 0, null);
+
+	      } catch (IOException e) {
+	          System.out.println("Image could not be read");
+	         System.exit(1);
+	      }
+	      //setOpacity(0.5f);
+	  }
+	  
+	  
 	   
 	    void draw(ApplicationContext context, Noeud [][] g) {
 	      context.renderFrame(graphics  -> {
@@ -55,12 +89,21 @@ public class Demo {
 	        for (int i=0;i< g.length;i++) {
 	        	graphics.setColor(Color.RED);
 				graphics.drawLine( 0,i*20, g[0].length*20,i*20);
-				
+				/*image*/
+			      try {
+			  	      imageSrc=((new File(imageFileNameMur)).toURI()).toURL();
+			          BufferedImage img = ImageIO.read(imageSrc);
+			          int w = img.getWidth(null);
+			          int h = img.getHeight(null);
+			        //  graphics.drawImage(img,0 , 0,20,20, null);    
+		
+				/*fin image*/
 				for (int j=0;j<g[0].length;j++) {
 					if(i==0) {graphics.drawLine(j*20, 0, j*20,g.length*20);}
 					switch (g[i][j].getNom()) {
 					case 'W':graphics.setColor(Color.black);
-					ellipse = new Ellipse2D.Float(j*20 , i*20 , 20, 20);
+					//ellipse = new Ellipse2D.Float(j*20 , i*20 , 20, 20);
+				     graphics.drawImage(img,j*20  , i*20,19,19, null);  
 					break;
 					case 'T':graphics.setColor(Color.BLUE);
 					ellipse = new Ellipse2D.Float(j*20 , i*20 , 20, 20);
@@ -74,6 +117,10 @@ public class Demo {
 					graphics.fill(ellipse);	
 					
 				}
+			      } catch (IOException e) {
+			          System.out.println("Image could not be read");
+			          System.exit(1);
+			      }
 						}
 	        
 	    	 
@@ -81,6 +128,8 @@ public class Demo {
 	    }
 	  }
 	  
+
+  
   public static void main(String[] args) {
 	    
 		

@@ -1,0 +1,17 @@
+[1mdiff --git a/src/Project_java_l3_IMI_2/demo/fr/umlv/zen5/demo/Demo.java b/src/Project_java_l3_IMI_2/demo/fr/umlv/zen5/demo/Demo.java[m
+[1mindex d631c4c..c5c68e0 100644[m
+[1m--- a/src/Project_java_l3_IMI_2/demo/fr/umlv/zen5/demo/Demo.java[m
+[1m+++ b/src/Project_java_l3_IMI_2/demo/fr/umlv/zen5/demo/Demo.java[m
+[36m@@ -1,4 +1,3 @@[m
+[31m-/*Version 0.0.0.1*/[m
+ package Project_java_l3_IMI_2.demo.fr.umlv.zen5.demo;[m
+ [m
+ import java.awt.Color;[m
+[36m@@ -138,7 +137,6 @@[m [mpublic class Demo {[m
+         	 area.draw(context,n2.getPath(), ((location.y-30)/20),((location.x-60)/20));[m
+ [m
+         }[m
+[31m-        [m
+         x=(int)location.x-60;y=(int)location.y-30;[m
+       }[m
+     });[m
