@@ -154,5 +154,7 @@ public class Graphe {
 		
 
 	}
+public int  getWidth() {return this.graphe.length;} 
+public int getHeight() {return this.graphe[0].length;}
 	
 }
