@@ -1,15 +1,8 @@
 package Graphic_Interface;
 
-
-/**
- * @author atika
- */
-
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Point2D;
-//import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,26 +19,97 @@ import fr.umlv.zen5.Event;
 import fr.umlv.zen5.ScreenInfo;
 import fr.umlv.zen5.Event.Action;
 
+
+/**
+ * c'est la classe qui affiche le tableau
+ * 
+ */
 public class Interface {
 	//private static int x=0;
 	//private static int y=0;
 	//Wall_J Wj; 
-    private static int s;
-	private static boolean bombe=false;
+    private int s;
+	private boolean bombe=false;
+	
+	public Interface(Graphe g) {
+		 Application.run(Color.GREEN, context -> {
+			    
+			 ScreenInfo screenInfo = context.getScreenInfo();
+		      int width =(int)(screenInfo.getWidth());
+		      int height =(int)screenInfo.getHeight();
+		      System.out.println("size of the screen (" + width + " x " + height + ")"+context.getScreenInfo());
+		      int w=(width-10)/g.getHeight();
+			  int h=(height-10)/g.getWidth();
+		      
+				graph_display(context, g.getGraphe(),h,w);
+				Noeud n1 = null;
+				Noeud n2 = null ;
+		        
+				Event event;
+				Action action;
+				screenInfo = context.getScreenInfo();
+			       
+			      System.out.println("size of the screen (" + width + " x " + height + ")"+context.getScreenInfo());
+			     
+		      for(;;) {
+		    	  
+		    	 event = context.pollOrWaitEvent(10);
+
+		         if (event == null) {  // no event
+		          continue;
+		        }
+		        action = event.getAction();
+		   	 Point2D.Float location = event.getLocation();
+		        if (action == Action.KEY_PRESSED || action == Action.KEY_RELEASED) {
+		        	if(event.getKey().toString().equals("UNDEFINED")) {
+		        		System.out.println(",," +event.getKey());
+		        		bombe=true;s++;
+		        	
+		        	continue;}
+		        	else {
+		          System.out.println("abort abort !" +event.getKey());
+		          context.exit(0);
+		         return;}
+		          
+		        }
+		        if(location.x<w*g.getHeight() && location.y< h*g.getWidth()) { 
+		        n2=g.getNoeud((int)((location.y)/h),(int)((location.x)/w));
+		      
+		        try {
+					g.Shortest_path(n1,n2);
+					
+		       	 path_display(context,g,n2.getPath(),h,w);
+		       	n1=n2;
+		       	} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Wall-j ne peut pas aller a cette position", "Attention", JOptionPane.WARNING_MESSAGE);
+
+				}}
+		          
+		      }
+		      
+		    });
+	}
+	
+	
 	/**
-	  *une methode qui 
+	  *une méthode qui supprime un rectangle h x w
 	  * @param
 	  */
 	
-	private void clear(ApplicationContext context,Noeud n,int h,int w) {
+	public void clear(ApplicationContext context,Noeud n,int h,int w) {
 		 
 		 context.renderFrame(graphics  -> {
 			 graphics.clearRect(n.getY()*h,n.getX()*w, h, w);
 				 
 		 });
 		 }
-	 
-	private void path_display(ApplicationContext context,Graphe g,ArrayList<Noeud> path,int w,int h) {
+	
+	 /**
+	  * c'est une méthode qui affiche wall fair à mesure et les bombe si on a déposé une
+	  * @param g c'est le tableau de jeu
+	  * @param path c'est le chemin
+	  */
+	public void path_display(ApplicationContext context,Graphe g,ArrayList<Noeud> path,int w,int h) {
 	    	String imageFileNameWall_j = Paths.get(System.getProperty("user.dir"),"Image","wall_J.png").toString();
 		   
 	    	context.renderFrame(graphics  -> {
@@ -77,10 +141,16 @@ public class Interface {
 	      });
 	       
 	      if(bombe) { display_bomb(context,path.get(0).getY()*h,path.get(0).getX()*w,  h, w);
-	      g.setBomb(path.get(0).getX(), path.get(0).getY(), s);
+	      g.setBomb(path.get(0).getX(), path.get(0).getY(), s/2);
 	      System.out.println(g);}} 
-	  
-	private void graph_display(ApplicationContext context, Noeud [][] g,int ww,int hh) {
+	 
+	/**
+	 * c'est une methode qui affiche sur laplication les wall, trash, garbage
+	 * @param g c'est le tableau de jeu
+	 * @param width d'une case
+	 * @param height d'une case
+	 */
+	private void graph_display(ApplicationContext context, Noeud [][] g,int width,int height) {
 	    	String imageFileNameWall = Paths.get(System.getProperty("user.dir"),"Image","wall.png").toString();
 		    String imageFileNameTrash = Paths.get(System.getProperty("user.dir"),"Image","trash.png").toString();
 		    String imageFileNameGarbage = Paths.get(System.getProperty("user.dir"),"Image","garbage.png").toString();
@@ -97,13 +167,13 @@ public class Interface {
 				for (int j=0;j<g[0].length;j++) {
 					switch (g[i][j].getNom()) {
 					case 'W':
-						graphics.drawImage(imgW,j*hh  , i*ww, hh+4, ww+5, null);  
+						graphics.drawImage(imgW,j*height  , i*width, height+4, width+5, null);  
 					break;
 					case 'T':
-						graphics.drawImage(imgT,j*hh  , i*ww, hh, ww, null);  
+						graphics.drawImage(imgT,j*height  , i*width, height, width, null);  
 					break;
 					case 'G':
-						graphics.drawImage(imgG,j*hh  , i*ww, hh, ww, null);  
+						graphics.drawImage(imgG,j*height  , i*width, height, width, null);  
 					break;
 					
 					
@@ -120,6 +190,14 @@ public class Interface {
 		          System.exit(1);
 		      }
 	    }
+	/**
+	 * c'est la metode qui affiche les bombe
+	 * @param context
+	 * @param i
+	 * @param j
+	 * @param h
+	 * @param w
+	 */
    
 	public void display_bomb(ApplicationContext context, int i, int j, int h, int w) {
 	    	// 
@@ -134,12 +212,11 @@ public class Interface {
 	    		imgW = ImageIO.read(imageSrc);
 	    		context.renderFrame(graphe -> {
 	    	    	graphe.drawImage(imgW,i,j, h, w, null); 
-	    	    	graphe.setColor(Color.RED);
-	    	    	graphe.setFont(new Font("impact", Font.ROMAN_BASELINE, 11)); 
+	    	    	graphe.setColor(Color.BLACK);
+	    	    	graphe.setFont(new Font("impact", Font.LAYOUT_LEFT_TO_RIGHT, 11)); 
 	    	    	
-	    	    	graphe.drawString(s+"",i+(h-20)/2,j+(w+15)/2 );
-	    	    	graphe.clearRect(i+(h-20)/2,j+(w+15)/2, 11, 11);
-	    	    	graphe.drawString(9+"",i+(h-20)/2,j+(w+15)/2 );
+	    	    	graphe.drawString(s/2+"",i+(h-15)/2,j+(w+15)/2 );
+	    	    	//graphe.clearRect(i+(h-18)/2,j+(w-3)/2, 11, 11);
 	    	    	
 	    		}); 
 	    	} catch (IOException e) {
@@ -150,62 +227,5 @@ public class Interface {
 	    	bombe=false;
 	    	s=0;
 	    }
-public Interface(Graphe g) {
-	 Application.run(Color.GREEN, context -> {
-		    
-		 ScreenInfo screenInfo = context.getScreenInfo();
-	      int width =(int)(screenInfo.getWidth());
-	      int height =(int)screenInfo.getHeight();
-	      System.out.println("size of the screen (" + width + " x " + height + ")"+context.getScreenInfo());
-	      int w=(width-10)/g.getHeight();
-		  int h=(height-10)/g.getWidth();
-	      
-			graph_display(context, g.getGraphe(),h,w);
-			Noeud n1 = null;
-			Noeud n2 = null ;
-	        
-			Event event;
-			Action action;
-			screenInfo = context.getScreenInfo();
-		       
-		      System.out.println("size of the screen (" + width + " x " + height + ")"+context.getScreenInfo());
-		     
-	      for(;;) {
-	    	  
-	    	 event = context.pollOrWaitEvent(10);
 
-	         if (event == null) {  // no event
-	          continue;
-	        }
-	        action = event.getAction();
-	   	 Point2D.Float location = event.getLocation();
-	        if (action == Action.KEY_PRESSED || action == Action.KEY_RELEASED) {
-	        	if(event.getKey().toString().equals("UNDEFINED")) {
-	        		System.out.println(",," +event.getKey());
-	        		bombe=true;s++;
-	        	
-	        	continue;}
-	        	else {
-	          System.out.println("abort abort !" +event.getKey());
-	          context.exit(0);
-	         return;}
-	          
-	        }
-	        if(location.x<w*g.getHeight() && location.y< h*g.getWidth()) { 
-	        n2=g.getNoeud((int)((location.y)/h),(int)((location.x)/w));
-	      
-	        try {
-				g.Shortest_path(n1,n2);
-				
-	       	 path_display(context,g,n2.getPath(),h,w);
-	       	n1=n2;
-	       	} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Wall-j ne peut pas aller a cette position", "Attention", JOptionPane.WARNING_MESSAGE);
-
-			}}
-	          
-	      }
-	      
-	    });
-}
 }

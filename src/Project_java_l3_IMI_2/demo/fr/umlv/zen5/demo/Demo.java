@@ -3,28 +3,16 @@ package Project_java_l3_IMI_2.demo.fr.umlv.zen5.demo;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.TexturePaint;
-import java.awt.event.KeyEvent;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.plaf.SliderUI;
-
 import A_Star.Graphe;
 import A_Star.Noeud;
 import fr.umlv.zen5.Application;
@@ -144,8 +132,6 @@ public class Demo {
 	  }
 	  
 
-  
-  @SuppressWarnings("unlikely-arg-type")
 public static void main(String[] args) {
 	  
     Application.run(Color.GREEN, context -> {
@@ -255,12 +241,9 @@ private static void bomb(ApplicationContext context, int i, int j, int h, int w)
 	    	graphe.drawString(s+"",i+(h-20)/2,j+(w+15)/2 );
 	    	graphe.clearRect(i+(h-20)/2,j+(w+15)/2, 11, 11);
 	    	graphe.drawString(9+"",i+(h-20)/2,j+(w+15)/2 );
-	    	//graphe.drawString("5", (int)(location.y-20)/h+w/2,(int)((location.x-45)/w)+h/2);
-	   // Shape s;
-		////graphe.clip(s);	
+	    	
 		}); 
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}	
 	bombe=false;

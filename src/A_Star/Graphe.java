@@ -20,6 +20,11 @@ public class Graphe {
 	public Noeud[][] getGraphe() {
 		return graphe;
 	}
+	
+	/**
+	 * le constructeur de la classe 
+	 * @param leve le niveau
+	 */
 	public Graphe(int leve)  {
 		
 		ArrayList<String> level;
@@ -43,6 +48,13 @@ public class Graphe {
 	public void setBomb(int i,int j,int second){
 		this.graphe[i][j]=new Bomb(i, j, second);
 	}
+	
+	/**
+	 * c'est la méthode qui calcule le chemin de Noeud n1 jusqu'à n2
+	 * @param n1
+	 * @param n2
+	 * @throws Exception
+	 */
 	public void	Shortest_path(Noeud n1,Noeud n2) throws Exception{
 		if(n1==null) {n2.getPath().add(n2);return;}
 		Noeud u;
@@ -149,9 +161,31 @@ public class Graphe {
 		
 
 	}
+	/**
+	 * une méthode qui return la largeur de tableau
+	 * @return
+	 */
+	
 	public int  getWidth() {return this.graphe.length;} 
+	
+	/**
+	 * une méthode qui return la Largere
+	 * @return
+	 */
 	public int getHeight() {return this.graphe[0].length;}
+	
+	/**
+	 * reteutn le noeud a la position [i, j]
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public Noeud getNoeud(int i,int j ){return this.graphe[i][j];}
+	
+	/**
+	 * vérifier si le tableau est fini ou pas
+	 * @return
+	 */
 	public boolean NotGrabage() {
 		for(int i=0;i<graphe.length;i++)
 			for (Noeud noeuds : graphe[i]) if(noeuds.getNom()=='G')return true;
