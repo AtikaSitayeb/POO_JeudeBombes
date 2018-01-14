@@ -1,13 +1,19 @@
-package Project_java_l3_IMI;
+package A_Star;
 
 import java.util.ArrayList;
 
-public class Noeud {
+public abstract class Noeud {
 	
-			char nom;
-			int x, y,cout, heuristique;
-			ArrayList<Noeud> path=new ArrayList<Noeud>();
-			 
+			 private char nom;
+			private int x, y,cout, heuristique;
+			private ArrayList<Noeud> path=new ArrayList<Noeud>();
+			
+	public int getHeuristique() {
+		return heuristique;
+	}
+	public int getCout() {
+		return cout;
+	}		 
 	public Noeud(char c,int i,int j) {
 		nom=c;x=i;y=j;cout=0;heuristique=0;	
 	}
@@ -27,6 +33,15 @@ public class Noeud {
 	}
 	public ArrayList<Noeud> getPath() {
 		return path;
+	}
+	public void setCout(int cout) {
+		this.cout = cout;
+	}
+	public void setHeuristique(int heuristique) {
+		this.heuristique = heuristique;
+	}
+	public void setPath(ArrayList<Noeud> path) {
+		this.path = path;
 	}
 	
 @Override

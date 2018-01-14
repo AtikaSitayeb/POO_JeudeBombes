@@ -1,6 +1,10 @@
 package Project_java_l3_IMI;
 
-public class Garbage {
-	static int garbage=1; 
+import A_Star.Noeud;
+
+public class Garbage extends Noeud{
+	public Garbage(int i,int j) {
+		super('G',i,j);
+	}
 
 }

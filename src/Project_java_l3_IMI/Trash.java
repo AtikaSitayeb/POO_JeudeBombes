@@ -1,5 +1,9 @@
 package Project_java_l3_IMI;
 
-public class Trash {
-static int trash=2;
+import A_Star.Noeud;
+
+public class Trash extends Noeud{
+public Trash(int i,int j) {
+	super('T',i,j);
+}
 }

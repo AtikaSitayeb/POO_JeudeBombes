@@ -1,6 +1,12 @@
 package Project_java_l3_IMI;
 
-public class Wall_J {
-	static int wall_j=5;
+import A_Star.Noeud;
+
+public class Wall_J extends Noeud{
+	public Wall_J(int i,int j) {
+		super('J', i, j);
+		
+	}
+
 
 }
